@@ -17,8 +17,8 @@ class App extends Component {
         this.props.action.loadNodeById(id, parent);
     }
 
-    openChildren(id) {
-        this.props.action.openList(id);
+    openChildren(id, parent) {
+        this.props.action.openList(id, parent);
     }
 
     closeChildren(id) {
@@ -29,7 +29,7 @@ class App extends Component {
         const self = this;
         const nodes = this.props.nodes;
         if (nodes.load) {
-            return <div></div>;
+            return <div>Loading...</div>;
         }
         if (nodes.error) {
             return (
@@ -40,6 +40,7 @@ class App extends Component {
             <div>
                 <ul className="my-list">
                     <NodeList
+                        parent="root"
                         nodes={nodes.data}
                         fetchChildren={self.fetchChildren}
                         closeChildren={self.closeChildren}

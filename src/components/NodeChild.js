@@ -2,14 +2,15 @@ import React from 'react';
 import { Glyphicon } from 'react-bootstrap';
 import NodeList from './NodeList';
 
-const NodeChild = ({node, fetchChildren, closeChildren, openChildren, children, isOpen, fetchData, hasData}) => {
+const NodeChild = ({node, fetchChildren, closeChildren, openChildren, children, isOpen, fetchData, hasData, parent}) => {
+    const myParents = (parent==='root') ? node: `${parent}.children.data.${node}`;
     const _fetchChildren = (e) => {
         e.stopPropagation();
-        (fetchData) ? openChildren(node) : fetchChildren(node);
+        (fetchData) ? openChildren(myParents) : fetchChildren(node, myParents);
     };
     const _closeChildren = (e) => {
         e.stopPropagation();
-        closeChildren(node)
+        closeChildren(myParents)
     };
     let glyphIcon = (fetchData && !hasData) ? 'minus-sign' : (isOpen) ? 'triangle-bottom' : 'triangle-right';
     return (
@@ -20,6 +21,7 @@ const NodeChild = ({node, fetchChildren, closeChildren, openChildren, children, 
             </li>
             {(isOpen && children) ?
                 <NodeList
+                    parent={ myParents }
                     nodes={children}
                     fetchChildren={fetchChildren}
                     closeChildren={closeChildren}
